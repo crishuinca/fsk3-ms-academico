@@ -1,0 +1,11 @@
+package cl.bohiggins.ms_academico.repository;
+
+import cl.bohiggins.ms_academico.entity.Estudiante;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
+
+	List<Estudiante> findByCursoId(Long cursoId);
+}
