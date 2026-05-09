@@ -1,14 +1,15 @@
 package cl.bohiggins.ms_academico.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import cl.bohiggins.ms_academico.dto.EstudianteCreateRequest;
 import cl.bohiggins.ms_academico.entity.Curso;
 import cl.bohiggins.ms_academico.entity.Estudiante;
 import cl.bohiggins.ms_academico.repository.CursoRepository;
 import cl.bohiggins.ms_academico.repository.EstudianteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EstudianteService {
