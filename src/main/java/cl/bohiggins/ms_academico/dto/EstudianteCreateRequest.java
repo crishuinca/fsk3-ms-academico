@@ -14,6 +14,6 @@ public record EstudianteCreateRequest(
 		@NotBlank @Schema(example = "Casas") String apellidoPaterno,
 		@NotBlank @Schema(example = "González") String apellidoMaterno,
 		LocalDate fechaNacimiento,
-		@Schema(example = "juan.perez@alumno.colegio.cl") String email
+		@Schema(example = "juan.perez@duocuc.cl") String email
 ) {
 }
