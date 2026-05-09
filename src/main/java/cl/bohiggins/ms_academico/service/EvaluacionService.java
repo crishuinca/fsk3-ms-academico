@@ -35,7 +35,6 @@ public class EvaluacionService {
 		ev.setFecha(req.fecha());
 		ev.setSemestre(req.semestre());
 		ev.setAnio(req.anio());
-		ev.setPonderacion(req.ponderacion());
 		ev.setAsignatura(asignatura);
 		ev.setCurso(curso);
 		return repositorio.save(ev);
@@ -63,7 +62,6 @@ public class EvaluacionService {
 		ev.setFecha(ev_mod.getFecha());
 		ev.setSemestre(ev_mod.getSemestre());
 		ev.setAnio(ev_mod.getAnio());
-		ev.setPonderacion(ev_mod.getPonderacion());
 		if (ev_mod.getAsignatura() != null && ev_mod.getAsignatura().getId() != null) {
 			Asignatura a = asignaturaRepositorio.findById(ev_mod.getAsignatura().getId())
 					.orElseThrow(() -> new IllegalArgumentException("No existe la asignatura."));

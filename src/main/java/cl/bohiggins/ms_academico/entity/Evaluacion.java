@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -48,9 +47,6 @@ public class Evaluacion {
 
 	@Column(nullable = false)
 	private Integer anio;
-
-	@Column(nullable = false, precision = 5, scale = 2)
-	private BigDecimal ponderacion;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "asignatura_id", nullable = false)
