@@ -46,6 +46,10 @@ public class EstudianteService {
 		return repositorio.findById(id).orElse(null);
 	}
 
+	public Estudiante obtenerEstudianteRut(String rut) {
+		return repositorio.findByRut(rut).orElse(null);
+	}
+
 	public Estudiante modificarEstudiante(Estudiante e_mod) {
 		Estudiante e = repositorio.findById(e_mod.getId()).orElse(null);
 		if (e == null) {

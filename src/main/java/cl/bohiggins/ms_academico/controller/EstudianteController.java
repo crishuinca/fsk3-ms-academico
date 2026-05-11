@@ -56,6 +56,12 @@ public class EstudianteController {
 		return servicio.obtenerEstudianteID(id);
 	}
 
+	@Operation(summary = "Obtener estudiante por RUT")
+	@GetMapping("/estudianteByRut/{rut}")
+	public Estudiante c_obtenerEstudianteRut(@PathVariable String rut) {
+		return servicio.obtenerEstudianteRut(rut);
+	}
+
 	@Operation(summary = "Modificar estudiante", description = "Incluye curso con id si cambia de curso")
 	@PutMapping("/modificarEstudiante")
 	public Estudiante c_modificarEstudiante(@RequestBody Estudiante e) {
