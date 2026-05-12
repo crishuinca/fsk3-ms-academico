@@ -1,11 +1,12 @@
 package cl.bohiggins.ms_academico.service;
 
-import cl.bohiggins.ms_academico.entity.Asignatura;
-import cl.bohiggins.ms_academico.repository.AsignaturaRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import cl.bohiggins.ms_academico.entity.Asignatura;
+import cl.bohiggins.ms_academico.repository.AsignaturaRepository;
 
 @Service
 public class AsignaturaService {

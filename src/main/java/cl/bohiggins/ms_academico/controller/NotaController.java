@@ -1,13 +1,7 @@
 package cl.bohiggins.ms_academico.controller;
 
-import cl.bohiggins.ms_academico.dto.NotaCreateRequest;
-import cl.bohiggins.ms_academico.entity.Nota;
-import cl.bohiggins.ms_academico.service.NotaService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,12 +13,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import cl.bohiggins.ms_academico.dto.NotaCreateRequest;
+import cl.bohiggins.ms_academico.entity.Nota;
+import cl.bohiggins.ms_academico.service.NotaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:5173")
-@Tag(name = "Notas V1", description = "Calificaciones 1.0 a 7.0 (Chile)")
+@Tag(name = "Notas V1", description = "Calificaciones 1.0 a 7.0 ")
 public class NotaController {
 
 	@Autowired

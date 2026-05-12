@@ -1,5 +1,10 @@
 package cl.bohiggins.ms_academico.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import cl.bohiggins.ms_academico.dto.EvaluacionCreateRequest;
 import cl.bohiggins.ms_academico.entity.Asignatura;
 import cl.bohiggins.ms_academico.entity.Curso;
@@ -7,10 +12,6 @@ import cl.bohiggins.ms_academico.entity.Evaluacion;
 import cl.bohiggins.ms_academico.repository.AsignaturaRepository;
 import cl.bohiggins.ms_academico.repository.CursoRepository;
 import cl.bohiggins.ms_academico.repository.EvaluacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EvaluacionService {
@@ -35,7 +36,6 @@ public class EvaluacionService {
 		ev.setFecha(req.fecha());
 		ev.setSemestre(req.semestre());
 		ev.setAnio(req.anio());
-		ev.setPonderacion(req.ponderacion());
 		ev.setAsignatura(asignatura);
 		ev.setCurso(curso);
 		return repositorio.save(ev);
@@ -63,7 +63,6 @@ public class EvaluacionService {
 		ev.setFecha(ev_mod.getFecha());
 		ev.setSemestre(ev_mod.getSemestre());
 		ev.setAnio(ev_mod.getAnio());
-		ev.setPonderacion(ev_mod.getPonderacion());
 		if (ev_mod.getAsignatura() != null && ev_mod.getAsignatura().getId() != null) {
 			Asignatura a = asignaturaRepositorio.findById(ev_mod.getAsignatura().getId())
 					.orElseThrow(() -> new IllegalArgumentException("No existe la asignatura."));

@@ -1,12 +1,7 @@
 package cl.bohiggins.ms_academico.controller;
 
-import cl.bohiggins.ms_academico.entity.Asignatura;
-import cl.bohiggins.ms_academico.service.AsignaturaService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,12 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import cl.bohiggins.ms_academico.entity.Asignatura;
+import cl.bohiggins.ms_academico.service.AsignaturaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:5173")
-@Tag(name = "Asignaturas V1", description = "Materias dictadas en el colegio")
+@Tag(name = "Asignaturas V1", description = "Materias del colegio")
 public class AsignaturaController {
 
 	@Autowired
