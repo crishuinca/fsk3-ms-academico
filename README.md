@@ -66,6 +66,28 @@ Estado actual:
 - Cobertura global aproximada: 76% por líneas.
 - Regla JaCoCo: mínimo 60% para la capa `service`.
 
+## CI/CD y SonarQube
+
+El repositorio incluye un pipeline de GitHub Actions en:
+
+```text
+.github/workflows/ci-sonar.yml
+```
+
+El pipeline ejecuta:
+
+- Java 17.
+- `.\mvnw.cmd verify` equivalente en Linux: `./mvnw -B verify`.
+- Reporte JaCoCo como artefacto.
+- Análisis SonarQube/SonarCloud si existen las variables y secretos necesarios.
+
+Para activar Sonar en GitHub se debe configurar:
+
+- Secret: `SONAR_TOKEN`
+- Variable: `SONAR_ORGANIZATION`
+- Variable opcional: `SONAR_PROJECT_KEY`
+- Variable opcional: `SONAR_HOST_URL` si se usa SonarQube propio en vez de SonarCloud.
+
 ## Arquetipo Maven
 
 Este microservicio se usa como base para generar un arquetipo Maven. El objetivo del arquetipo es crear nuevos microservicios con una estructura similar: `controller`, `service`, `repository`, `dto`, `entity`, configuración de Swagger, H2, tests y JaCoCo.
