@@ -66,6 +66,47 @@ Estado actual:
 - Cobertura global aproximada: 76% por líneas.
 - Regla JaCoCo: mínimo 60% para la capa `service`.
 
+## Arquetipo Maven
+
+Este microservicio se usa como base para generar un arquetipo Maven. El objetivo del arquetipo es crear nuevos microservicios con una estructura similar: `controller`, `service`, `repository`, `dto`, `entity`, configuración de Swagger, H2, tests y JaCoCo.
+
+Generar el arquetipo desde este proyecto:
+
+```powershell
+.\mvnw.cmd -s ".\archetype-settings.xml" archetype:create-from-project
+```
+
+Nota: `archetype-settings.xml` es un archivo mínimo usado para evitar errores si no existe `C:\Users\tobal\.m2\settings.xml`.
+
+El arquetipo se genera en:
+
+```text
+target/generated-sources/archetype
+```
+
+Instalar el arquetipo en el repositorio Maven local:
+
+```powershell
+cd "C:\Users\tobal\Desktop\Fullstack 3\ms-academico\target\generated-sources\archetype"
+..\..\..\mvnw.cmd install
+```
+
+Generar un proyecto de prueba desde el arquetipo:
+
+```powershell
+cd "C:\Users\tobal\Desktop\Fullstack 3\ms-academico"
+.\mvnw.cmd org.apache.maven.plugins:maven-archetype-plugin:3.4.1:generate "-DarchetypeCatalog=local" "-DarchetypeGroupId=cl.bohiggins" "-DarchetypeArtifactId=ms-academico-archetype" "-DarchetypeVersion=0.0.1-SNAPSHOT" "-DgroupId=cl.bohiggins" "-DartifactId=ms-prueba-arquetipo" "-Dversion=0.0.1-SNAPSHOT" "-Dpackage=cl.bohiggins.ms_prueba" "-DoutputDirectory=.." "-DinteractiveMode=false"
+```
+
+Verificación realizada:
+
+```powershell
+cd "C:\Users\tobal\Desktop\Fullstack 3\ms-prueba-arquetipo"
+..\ms-academico\mvnw.cmd clean compile
+```
+
+Resultado: `BUILD SUCCESS`.
+
 ## Endpoints principales
 
 Cursos:
