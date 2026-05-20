@@ -31,6 +31,12 @@ public class EstudianteController {
 	@Autowired
 	private EstudianteService servicio;
 
+	@Operation(summary = "Proximo ID de estudiante", description = "Estimacion del ID autoincremental que recibira el siguiente registro")
+	@GetMapping("/estudiantes/proximoId")
+	public Long c_obtenerProximoIdEstudiante() {
+		return servicio.obtenerProximoId();
+	}
+
 	@Operation(summary = "Registrar estudiante", description = "Crea un estudiante asociado a un curso existente")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Estudiante creado") })
 	@PostMapping("/addEstudiante")

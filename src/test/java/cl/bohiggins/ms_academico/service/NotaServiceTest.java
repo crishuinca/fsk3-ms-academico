@@ -143,6 +143,35 @@ class NotaServiceTest {
 	}
 
 	@Test
+	void guardarNota_evaluacionNoExiste_lanzaError() {
+		Estudiante estudiante = new Estudiante();
+		estudiante.setId(1L);
+		NotaCreateRequest request = new NotaCreateRequest(1L, 99L, new BigDecimal("5.5"), "Obs");
+		when(estudianteRepositorio.findById(1L)).thenReturn(Optional.of(estudiante));
+		when(evaluacionRepositorio.findById(99L)).thenReturn(Optional.empty());
+
+		assertThrows(IllegalArgumentException.class, () -> servicio.guardarNota(request));
+	}
+
+	@Test
+	void modificarNota_actualizaValorValido() {
+		Nota actual = new Nota();
+		actual.setId(1L);
+		actual.setValor(new BigDecimal("5.0"));
+		Nota modificada = new Nota();
+		modificada.setId(1L);
+		modificada.setValor(new BigDecimal("6.5"));
+		modificada.setObservacion("Mejora");
+		when(repositorio.findById(1L)).thenReturn(Optional.of(actual));
+		when(repositorio.save(any(Nota.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+		Nota resultado = servicio.modificarNota(modificada);
+
+		assertEquals(new BigDecimal("6.5"), resultado.getValor());
+		assertEquals("Mejora", resultado.getObservacion());
+	}
+
+	@Test
 	void borrarNota_eliminaPorId() {
 		String resultado = servicio.borrarNota(1L);
 

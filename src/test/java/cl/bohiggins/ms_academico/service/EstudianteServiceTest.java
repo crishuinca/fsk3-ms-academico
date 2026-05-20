@@ -1,6 +1,7 @@
 package cl.bohiggins.ms_academico.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -56,6 +57,7 @@ class EstudianteServiceTest {
 				"cristobal.huinca@colegio.cl"
 		);
 
+		when(repositorio.findByRut("21827564-8")).thenReturn(Optional.empty());
 		when(cursoRepositorio.findById(1L)).thenReturn(Optional.of(curso));
 		when(repositorio.save(any(Estudiante.class))).thenAnswer(invocation -> {
 			Estudiante estudiante = invocation.getArgument(0);
@@ -72,6 +74,13 @@ class EstudianteServiceTest {
 		assertSame(curso, resultado.getCurso());
 		verify(cursoRepositorio).findById(1L);
 		verify(repositorio).save(any(Estudiante.class));
+	}
+
+	@Test
+	void obtenerProximoId_sinEstudiantes_retornaUno() {
+		when(repositorio.calcularProximoId()).thenReturn(1L);
+
+		assertEquals(1L, servicio.obtenerProximoId());
 	}
 
 	@Test
@@ -131,6 +140,65 @@ class EstudianteServiceTest {
 		Estudiante resultado = servicio.obtenerEstudianteID(5L);
 
 		assertSame(estudiante, resultado);
+	}
+
+	@Test
+	void guardarEstudiante_rutDuplicado_lanzaError() {
+		EstudianteCreateRequest request = new EstudianteCreateRequest(
+				1L,
+				"21827564-8",
+				"Cristobal",
+				"Huinca",
+				"Aravena",
+				LocalDate.of(2010, 4, 28),
+				"cristobal.huinca@colegio.cl"
+		);
+		when(repositorio.findByRut("21827564-8")).thenReturn(Optional.of(new Estudiante()));
+
+		IllegalArgumentException error = assertThrows(
+				IllegalArgumentException.class,
+				() -> servicio.guardarEstudiante(request)
+		);
+
+		assertEquals("Ya existe un estudiante con ese RUT.", error.getMessage());
+		verify(repositorio, never()).save(any(Estudiante.class));
+	}
+
+	@Test
+	void obtenerEstudiantes_retornaListaDelRepositorio() {
+		List<Estudiante> estudiantes = List.of(new Estudiante());
+		when(repositorio.findAll()).thenReturn(estudiantes);
+
+		assertSame(estudiantes, servicio.obtenerEstudiantes());
+	}
+
+	@Test
+	void modificarEstudiante_actualizaDatosSiExiste() {
+		Curso curso = new Curso();
+		curso.setId(1L);
+		Estudiante actual = new Estudiante();
+		actual.setId(5L);
+		Estudiante modificado = new Estudiante();
+		modificado.setId(5L);
+		modificado.setRut("21827564-8");
+		modificado.setNombres("Nuevo");
+		modificado.setCurso(curso);
+		when(repositorio.findById(5L)).thenReturn(Optional.of(actual));
+		when(cursoRepositorio.findById(1L)).thenReturn(Optional.of(curso));
+		when(repositorio.save(any(Estudiante.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+		Estudiante resultado = servicio.modificarEstudiante(modificado);
+
+		assertEquals("Nuevo", resultado.getNombres());
+	}
+
+	@Test
+	void modificarEstudiante_noExiste_retornaNull() {
+		Estudiante modificado = new Estudiante();
+		modificado.setId(99L);
+		when(repositorio.findById(99L)).thenReturn(Optional.empty());
+
+		assertNull(servicio.modificarEstudiante(modificado));
 	}
 
 	@Test

@@ -20,7 +20,15 @@ public class EstudianteService {
 	@Autowired
 	private CursoRepository cursoRepositorio;
 
+	public Long obtenerProximoId() {
+		return repositorio.calcularProximoId();
+	}
+
 	public Estudiante guardarEstudiante(EstudianteCreateRequest req) {
+		if (repositorio.findByRut(req.rut().trim()).isPresent()) {
+			throw new IllegalArgumentException("Ya existe un estudiante con ese RUT.");
+		}
+
 		Curso curso = cursoRepositorio.findById(req.cursoId())
 				.orElseThrow(() -> new IllegalArgumentException("No existe el curso."));
 		Estudiante e = new Estudiante();
