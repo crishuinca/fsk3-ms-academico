@@ -11,7 +11,7 @@ Este servicio administra la información académica principal: cursos, asignatur
 - Maven
 - Spring Web
 - Spring Data JPA
-- H2 en modo archivo
+- MySQL 8 (perfil `mysql`) / H2 en memoria para tests
 - Bean Validation
 - Swagger / OpenAPI con springdoc 2.8.6
 - JUnit 5, Mockito y JaCoCo
@@ -23,13 +23,13 @@ El servicio corre en el puerto `8081`.
 - API base: `http://localhost:8081/api/v1`
 - Swagger UI: `http://localhost:8081/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8081/v3/api-docs`
-- H2 console: `http://localhost:8081/h2-console`
+## Base de datos MySQL
 
-Datos para H2:
+Requiere MySQL en `localhost:3306`.
 
-- JDBC URL: `jdbc:h2:file:./data/academicodb`
-- Usuario: `sa`
-- Password: vacío
+- Base de este servicio: `libroclases_academico`
+- Usuario: `libroclases` / `clave123`
+- **Levantar MySQL con Docker:** repositorio [bff-libroclases](https://github.com/crishuinca/fsk3-bff) — `docker-compose.yml` en la raiz y guia `docs/MYSQL.md`
 
 ## Cómo ejecutar
 
@@ -64,7 +64,7 @@ Estado actual:
 
 - 38 tests.
 - Cobertura global aproximada: 76% por líneas.
-- Regla JaCoCo: mínimo 60% para la capa `service`.
+- Regla JaCoCo: mínimo 80% para la capa `service`.
 
 ## CI/CD y SonarQube
 
