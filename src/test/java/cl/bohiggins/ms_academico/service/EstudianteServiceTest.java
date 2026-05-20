@@ -56,6 +56,7 @@ class EstudianteServiceTest {
 				"cristobal.huinca@colegio.cl"
 		);
 
+		when(repositorio.findByRut("21827564-8")).thenReturn(Optional.empty());
 		when(cursoRepositorio.findById(1L)).thenReturn(Optional.of(curso));
 		when(repositorio.save(any(Estudiante.class))).thenAnswer(invocation -> {
 			Estudiante estudiante = invocation.getArgument(0);
@@ -72,6 +73,13 @@ class EstudianteServiceTest {
 		assertSame(curso, resultado.getCurso());
 		verify(cursoRepositorio).findById(1L);
 		verify(repositorio).save(any(Estudiante.class));
+	}
+
+	@Test
+	void obtenerProximoId_sinEstudiantes_retornaUno() {
+		when(repositorio.calcularProximoId()).thenReturn(1L);
+
+		assertEquals(1L, servicio.obtenerProximoId());
 	}
 
 	@Test
