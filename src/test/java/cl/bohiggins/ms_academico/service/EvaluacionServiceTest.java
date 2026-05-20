@@ -133,6 +133,48 @@ class EvaluacionServiceTest {
 	}
 
 	@Test
+	void guardarEvaluacion_cursoNoExiste_lanzaError() {
+		Asignatura asignatura = new Asignatura();
+		asignatura.setId(1L);
+		EvaluacionCreateRequest request = new EvaluacionCreateRequest(
+				"Prueba",
+				TipoEvaluacion.PRUEBA,
+				LocalDate.of(2026, 5, 10),
+				1,
+				2026,
+				1L,
+				99L
+		);
+		when(asignaturaRepositorio.findById(1L)).thenReturn(Optional.of(asignatura));
+		when(cursoRepositorio.findById(99L)).thenReturn(Optional.empty());
+
+		assertThrows(IllegalArgumentException.class, () -> servicio.guardarEvaluacion(request));
+	}
+
+	@Test
+	void modificarEvaluacion_actualizaDatosSiExiste() {
+		Evaluacion actual = new Evaluacion();
+		actual.setId(10L);
+		Evaluacion modificada = new Evaluacion();
+		modificada.setId(10L);
+		modificada.setNombre("Control 2");
+		when(repositorio.findById(10L)).thenReturn(Optional.of(actual));
+		when(repositorio.save(any(Evaluacion.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+		Evaluacion resultado = servicio.modificarEvaluacion(modificada);
+
+		assertEquals("Control 2", resultado.getNombre());
+	}
+
+	@Test
+	void obtenerEvaluaciones_retornaListaDelRepositorio() {
+		List<Evaluacion> evaluaciones = List.of(new Evaluacion());
+		when(repositorio.findAll()).thenReturn(evaluaciones);
+
+		assertSame(evaluaciones, servicio.obtenerEvaluaciones());
+	}
+
+	@Test
 	void borrarEvaluacion_eliminaPorId() {
 		String resultado = servicio.borrarEvaluacion(1L);
 
