@@ -23,6 +23,12 @@ El servicio corre en el puerto `8081`.
 - API base: `http://localhost:8081/api/v1`
 - Swagger UI: `http://localhost:8081/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8081/v3/api-docs`
+- Health: `http://localhost:8081/actuator/health`
+- Metrics: `http://localhost:8081/actuator/metrics`
+
+## Orden de arranque
+
+MySQL → Eureka → **ms-academico** → ms-asistencia → BFF → api-gateway → frontend
 ## Base de datos MySQL
 
 Requiere MySQL en `localhost:3306`.
