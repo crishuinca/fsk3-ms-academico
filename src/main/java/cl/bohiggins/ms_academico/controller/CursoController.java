@@ -2,12 +2,14 @@ package cl.bohiggins.ms_academico.controller;
 
 import cl.bohiggins.ms_academico.entity.Curso;
 import cl.bohiggins.ms_academico.service.CursoService;
+import cl.bohiggins.ms_academico.web.RecursoHttp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,8 +33,9 @@ public class CursoController {
 	private CursoService servicio;
 
 	@Operation(summary = "Crear curso", description = "Registra un curso en el sistema")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Curso creado") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Curso creado") })
 	@PostMapping("/addCurso")
+	@ResponseStatus(HttpStatus.CREATED)
 	public Curso c_guardarCurso(@Valid @RequestBody Curso c) {
 		c.setId(null);
 		return servicio.guardarCurso(c);
@@ -39,6 +43,7 @@ public class CursoController {
 
 	@Operation(summary = "Crear varios cursos")
 	@PostMapping("/addCursos")
+	@ResponseStatus(HttpStatus.CREATED)
 	public List<Curso> c_guardarCursos(@RequestBody List<Curso> lista) {
 		lista.forEach(x -> x.setId(null));
 		return servicio.guardarCursos(lista);
@@ -53,13 +58,13 @@ public class CursoController {
 	@Operation(summary = "Obtener curso por ID")
 	@GetMapping("/cursoByID/{id}")
 	public Curso c_obtenerCursoID(@PathVariable Long id) {
-		return servicio.obtenerCursoID(id);
+		return RecursoHttp.requerir(servicio.obtenerCursoID(id), "Curso no encontrado.");
 	}
 
 	@Operation(summary = "Modificar curso")
 	@PutMapping("/modificarCurso")
 	public Curso c_modificarCurso(@Valid @RequestBody Curso c) {
-		return servicio.modificarCurso(c);
+		return RecursoHttp.requerir(servicio.modificarCurso(c), "Curso no encontrado.");
 	}
 
 	@Operation(summary = "Eliminar curso")

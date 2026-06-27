@@ -3,6 +3,7 @@ package cl.bohiggins.ms_academico.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.bohiggins.ms_academico.dto.EstudianteCreateRequest;
 import cl.bohiggins.ms_academico.entity.Estudiante;
 import cl.bohiggins.ms_academico.service.EstudianteService;
+import cl.bohiggins.ms_academico.web.RecursoHttp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,8 +41,9 @@ public class EstudianteController {
 	}
 
 	@Operation(summary = "Registrar estudiante", description = "Crea un estudiante asociado a un curso existente")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Estudiante creado") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Estudiante creado") })
 	@PostMapping("/addEstudiante")
+	@ResponseStatus(HttpStatus.CREATED)
 	public Estudiante c_guardarEstudiante(@Valid @RequestBody EstudianteCreateRequest req) {
 		return servicio.guardarEstudiante(req);
 	}
@@ -59,19 +63,19 @@ public class EstudianteController {
 	@Operation(summary = "Obtener estudiante por ID")
 	@GetMapping("/estudianteByID/{id}")
 	public Estudiante c_obtenerEstudianteID(@PathVariable Long id) {
-		return servicio.obtenerEstudianteID(id);
+		return RecursoHttp.requerir(servicio.obtenerEstudianteID(id), "Estudiante no encontrado.");
 	}
 
 	@Operation(summary = "Obtener estudiante por RUT")
 	@GetMapping("/estudianteByRut/{rut}")
 	public Estudiante c_obtenerEstudianteRut(@PathVariable String rut) {
-		return servicio.obtenerEstudianteRut(rut);
+		return RecursoHttp.requerir(servicio.obtenerEstudianteRut(rut), "Estudiante no encontrado.");
 	}
 
 	@Operation(summary = "Modificar estudiante", description = "Incluye curso con id si cambia de curso")
 	@PutMapping("/modificarEstudiante")
 	public Estudiante c_modificarEstudiante(@RequestBody Estudiante e) {
-		return servicio.modificarEstudiante(e);
+		return RecursoHttp.requerir(servicio.modificarEstudiante(e), "Estudiante no encontrado.");
 	}
 
 	@Operation(summary = "Eliminar estudiante")

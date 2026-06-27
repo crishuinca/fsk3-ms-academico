@@ -3,6 +3,7 @@ package cl.bohiggins.ms_academico.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.bohiggins.ms_academico.entity.Asignatura;
 import cl.bohiggins.ms_academico.service.AsignaturaService;
+import cl.bohiggins.ms_academico.web.RecursoHttp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -31,8 +34,9 @@ public class AsignaturaController {
 	private AsignaturaService servicio;
 
 	@Operation(summary = "Crear asignatura")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Asignatura creada") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Asignatura creada") })
 	@PostMapping("/addAsignatura")
+	@ResponseStatus(HttpStatus.CREATED)
 	public Asignatura c_guardarAsignatura(@Valid @RequestBody Asignatura a) {
 		a.setId(null);
 		return servicio.guardarAsignatura(a);
@@ -40,6 +44,7 @@ public class AsignaturaController {
 
 	@Operation(summary = "Crear varias asignaturas")
 	@PostMapping("/addAsignaturas")
+	@ResponseStatus(HttpStatus.CREATED)
 	public List<Asignatura> c_guardarAsignaturas(@RequestBody List<Asignatura> lista) {
 		lista.forEach(x -> x.setId(null));
 		return servicio.guardarAsignaturas(lista);
@@ -54,13 +59,13 @@ public class AsignaturaController {
 	@Operation(summary = "Obtener asignatura por ID")
 	@GetMapping("/asignaturaByID/{id}")
 	public Asignatura c_obtenerAsignaturaID(@PathVariable Long id) {
-		return servicio.obtenerAsignaturaID(id);
+		return RecursoHttp.requerir(servicio.obtenerAsignaturaID(id), "Asignatura no encontrada.");
 	}
 
 	@Operation(summary = "Modificar asignatura")
 	@PutMapping("/modificarAsignatura")
 	public Asignatura c_modificarAsignatura(@Valid @RequestBody Asignatura a) {
-		return servicio.modificarAsignatura(a);
+		return RecursoHttp.requerir(servicio.modificarAsignatura(a), "Asignatura no encontrada.");
 	}
 
 	@Operation(summary = "Eliminar asignatura")

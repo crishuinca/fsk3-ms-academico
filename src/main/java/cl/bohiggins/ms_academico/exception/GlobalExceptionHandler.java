@@ -1,5 +1,6 @@
 package cl.bohiggins.ms_academico.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +12,11 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+	@ExceptionHandler(RecursoNoEncontradoException.class)
+	public ResponseEntity<Map<String, String>> noEncontrado(RecursoNoEncontradoException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
+	}
+
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<Map<String, String>> negocio(IllegalArgumentException ex) {
 		return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
@@ -20,11 +26,17 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<Map<String, String>> validacion(MethodArgumentNotValidException ex) {
 		StringBuilder msg = new StringBuilder();
 		for (FieldError fe : ex.getBindingResult().getFieldErrors()) {
-			if (msg.length() > 0) {
+			if (!msg.isEmpty()) {
 				msg.append(" | ");
 			}
 			msg.append(fe.getField()).append(": ").append(fe.getDefaultMessage());
 		}
 		return ResponseEntity.badRequest().body(Map.of("error", msg.toString()));
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Map<String, String>> interno(Exception ex) {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body(Map.of("error", "Error interno del servidor."));
 	}
 }

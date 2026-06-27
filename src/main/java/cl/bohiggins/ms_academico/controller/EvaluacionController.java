@@ -3,6 +3,7 @@ package cl.bohiggins.ms_academico.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.bohiggins.ms_academico.dto.EvaluacionCreateRequest;
 import cl.bohiggins.ms_academico.entity.Evaluacion;
 import cl.bohiggins.ms_academico.service.EvaluacionService;
+import cl.bohiggins.ms_academico.web.RecursoHttp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -32,8 +35,9 @@ public class EvaluacionController {
 	private EvaluacionService servicio;
 
 	@Operation(summary = "Crear evaluación")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Evaluación creada") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Evaluación creada") })
 	@PostMapping("/addEvaluacion")
+	@ResponseStatus(HttpStatus.CREATED)
 	public Evaluacion c_guardarEvaluacion(@Valid @RequestBody EvaluacionCreateRequest req) {
 		return servicio.guardarEvaluacion(req);
 	}
@@ -53,13 +57,13 @@ public class EvaluacionController {
 	@Operation(summary = "Obtener evaluación por ID")
 	@GetMapping("/evaluacionByID/{id}")
 	public Evaluacion c_obtenerEvaluacionID(@PathVariable Long id) {
-		return servicio.obtenerEvaluacionID(id);
+		return RecursoHttp.requerir(servicio.obtenerEvaluacionID(id), "Evaluacion no encontrada.");
 	}
 
 	@Operation(summary = "Modificar evaluación", description = "Puede incluir asignatura y curso con id")
 	@PutMapping("/modificarEvaluacion")
 	public Evaluacion c_modificarEvaluacion(@RequestBody Evaluacion ev) {
-		return servicio.modificarEvaluacion(ev);
+		return RecursoHttp.requerir(servicio.modificarEvaluacion(ev), "Evaluacion no encontrada.");
 	}
 
 	@Operation(summary = "Eliminar evaluación")
